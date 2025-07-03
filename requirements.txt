@@ -1,3 +1,4 @@
 azure-functions
 scikit-learn
 joblib
+azure-iot-device
