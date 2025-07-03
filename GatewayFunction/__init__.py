@@ -1,6 +1,12 @@
 import logging
 import azure.functions as func
 import json
+import joblib
+import os
+
+# Load model (do this outside function so it loads once)
+model_path = os.path.join(os.path.dirname(__file__), '../decision_tree_model.joblib')
+model = joblib.load(model_path)
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('🚪 Gateway function triggered.')
@@ -10,17 +16,25 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     except ValueError:
         return func.HttpResponse("Invalid JSON", status_code=400)
 
-    # Example: Basic ML processing - simple rule for now
-    sound_level = req_body.get('sensor_sound', 0)
-    if sound_level > 70:
-        req_body['anomaly_flag'] = True
-    else:
-        req_body['anomaly_flag'] = False
+    try:
+        # Extract features
+        features = [
+            req_body.get('sensor_temp', 0),
+            req_body.get('sensor_gas', 0),
+            req_body.get('sensor_co', 0),
+            req_body.get('sensor_sound', 0),
+            req_body.get('sensor_smoke', 0)
+        ]
 
-    # TODO: Connect to Azure IoT Hub here and forward data
+        # Predict
+        prediction = model.predict([features])[0]
+        req_body['anomaly_flag'] = bool(prediction)
 
-    return func.HttpResponse(
-        json.dumps({"status": "Processed", "processed_data": req_body}),
-        mimetype="application/json",
-        status_code=200
-    )
+        return func.HttpResponse(
+            json.dumps({"status": "Processed with ML", "processed_data": req_body}),
+            mimetype="application/json",
+            status_code=200
+        )
+    except Exception as e:
+        logging.error(f"Error processing ML: {e}")
+        return func.HttpResponse("Error processing ML", status_code=500)
