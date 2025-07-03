@@ -17,6 +17,7 @@ device_client = IoTHubDeviceClient.create_from_connection_string(IOTHUB_DEVICE_C
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('🚪 Gateway function triggered.')
+        logging.info('✅ inside......')
 
     try:
         req_body = req.get_json()
