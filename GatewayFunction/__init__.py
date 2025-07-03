@@ -5,6 +5,9 @@ import joblib
 import os
 from azure.iot.device import IoTHubDeviceClient, Message
 
+        logging.info('✅ inside......')
+
+
 # Load model
 model_path = os.path.join(os.path.dirname(__file__), '../decision_tree_model.joblib')
 model = joblib.load(model_path)
@@ -17,7 +20,7 @@ device_client = IoTHubDeviceClient.create_from_connection_string(IOTHUB_DEVICE_C
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('🚪 Gateway function triggered.')
-        logging.info('✅ inside......')
+
 
     try:
         req_body = req.get_json()
