@@ -9,7 +9,7 @@ from azure.iot.device import IoTHubDeviceClient, Message
 
 
 # Load model
-model_path = 'decision_tree_model.joblib'
+model_path = os.path.join(os.path.dirname(__file__), 'decision_tree_model.joblib')
 model = joblib.load(model_path)
 logging.info(f'Model path: {os.path.abspath(model_path)}')
 
