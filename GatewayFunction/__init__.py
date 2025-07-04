@@ -5,7 +5,7 @@ import joblib
 import os
 from azure.iot.device import IoTHubDeviceClient, Message
 
-        logging.info('✅ inside......')
+
 
 
 # Load model
