@@ -3,7 +3,7 @@ import azure.functions as azuref
 import json
 
 def main(req: azuref.HttpRequest) -> azuref.HttpResponse:
-    logging.info('🚪 Gateway function ff triggered.')
+    logging.info('🚪 Gateway function fef triggered.')
 
     try:
         req_body = req.get_json()
@@ -16,7 +16,7 @@ def main(req: azuref.HttpRequest) -> azuref.HttpResponse:
         logging.info('sensor_temp is = {}'.format(req_body.get('sensor_temp', 0)))
 
         return azuref.HttpResponse(
-            json.dumps({"status": "Function is reachable"}),
+            json.dumps({"status": "Function is reachable", 'sensor_temp is = {}'.format(req_body.get('sensor_temp', 0)) }),
             mimetype="application/json",
             status_code=200
         )
