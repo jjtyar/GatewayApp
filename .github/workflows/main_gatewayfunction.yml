@@ -7,14 +7,15 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'  # your project root
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
   PYTHON_VERSION: '3.10'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      id-token: write   # Required for Azure login via OIDC
+      contents: read    # Required for GitHub checkout
 
     steps:
       - name: Checkout repository
