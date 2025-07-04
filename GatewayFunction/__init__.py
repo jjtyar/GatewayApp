@@ -24,11 +24,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
 
     try:
-        req_body = req.get_json()
-    except ValueError:
-        return func.HttpResponse("Invalid JSON", status_code=400)
 
-    try:
+        req_body = req.get_json()
+
+        
         # Extract features for ML
         features = [
             req_body.get('sensor_temp', 0),
