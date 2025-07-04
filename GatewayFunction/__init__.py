@@ -3,12 +3,12 @@ import azure.functions as azuref
 import json
 
 def main(req: azuref.HttpRequest) -> azuref.HttpResponse:
-    logging.info('🚪 Gateway function flyeef triggered.')
+    logging.info('🚪 Gateway function flyeppef triggered.')
 
     try:
 
         model_path = os.path.join(os.path.dirname(__file__), '../decision_tree_model.joblib')
-model = joblib.load(model_path)
+
 logging.info(f'Model path: {os.path.abspath(model_path)}')
 
         req_body = req.get_json()
