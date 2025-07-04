@@ -11,6 +11,7 @@ from azure.iot.device import IoTHubDeviceClient, Message
 # Load model
 model_path = os.path.join(os.path.dirname(__file__), '../decision_tree_model.joblib')
 model = joblib.load(model_path)
+logging.info(f'Model path: {os.path.abspath(model_path)}')
 
 # IoT Hub Device Connection String
 IOTHUB_DEVICE_CONNECTION_STRING = "HostName=homesafetyhub.azure-devices.net;DeviceId=gatewaydevice;SharedAccessKey=8HLMsfUW4hRaJuoIq3HvNTj4USn2rqvof8jF9qaLkBs="
