@@ -21,3 +21,8 @@ def main(req: azuref.HttpRequest) -> azuref.HttpResponse:
         status_code=200
     )
 
+    except Exception as e:
+        logging.error(f"Error: {e}")
+        return azuref.HttpResponse("Error in processing request", status_code
+
+                                   
