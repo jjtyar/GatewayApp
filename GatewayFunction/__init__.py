@@ -10,12 +10,12 @@ from azure.storage.blob import BlobServiceClient
 model_path = os.path.join(os.path.dirname(__file__), 'decision_tree_model.joblib')
 model = joblib.load(model_path)
 
-# IoT Hub Device Connection String
+# IoT Hub Device Connection String (consider moving this to App Settings later)
 IOTHUB_DEVICE_CONNECTION_STRING = "HostName=homesafetyhub.azure-devices.net;DeviceId=gatewaydevice;SharedAccessKey=8HLMsfUW4hRaJuoIq3HvNTj4USn2rqvof8jF9qaLkBs="
 device_client = IoTHubDeviceClient.create_from_connection_string(IOTHUB_DEVICE_CONNECTION_STRING)
 
 # Azure Blob Storage Setup
-BLOB_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=publicanonymousaccount;AccountKey=REPLACE_WITH_YOUR_ACCOUNT_KEY;EndpointSuffix=core.windows.net"
+BLOB_CONNECTION_STRING = os.getenv('BLOB_CONNECTION_STRING')  # ✅ Securely loaded from App Settings
 BLOB_CONTAINER_NAME = "sensordata"
 BLOB_FILE_NAME = "sensor_data.json"
 
@@ -51,6 +51,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             mimetype="application/json",
             status_code=200
         )
+
     except Exception as e:
         logging.error(f"Error: {e}")
         return func.HttpResponse("Error processing request.", status_code=500)
@@ -61,12 +62,16 @@ def update_blob(new_event):
         blob_client = blob_service_client.get_container_client(BLOB_CONTAINER_NAME).get_blob_client(BLOB_FILE_NAME)
 
         try:
+            # Try to download existing data
             blob_data = blob_client.download_blob().readall()
             sensor_data = json.loads(blob_data)
         except Exception:
+            # If blob does not exist or is empty
             sensor_data = []
 
         sensor_data.append(new_event)
+
+        # Upload updated data (overwrite existing blob)
         blob_client.upload_blob(json.dumps(sensor_data), overwrite=True)
 
         logging.info('✅ Blob updated successfully.')
