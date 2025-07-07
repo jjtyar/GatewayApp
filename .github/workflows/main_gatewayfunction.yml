@@ -5,7 +5,7 @@ name: Build and deploy Python project to Azure Function App - gatewayfunction2
 on:
   push:
     branches:
-      - continue-with-adding-a-new-http-triggered-listener-for-controlroom
+      - main
   workflow_dispatch:
 
 env:
