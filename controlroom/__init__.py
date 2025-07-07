@@ -4,7 +4,7 @@ import json
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    # Azure Blob Storage connection details
+    # Azure Blob Storage connection details 
     blob_connection_string = "DefaultEndpointsProtocol=https;AccountName=publicanonymousaccount;AccountKey=WvptbsFWaE7uE6jlRohJSEcWEDSGqWDEVc1yX4vYS9Fte27k70Lh9GbuP0k/B/d/weENMqiLYi2t+AStYhMs8A==;EndpointSuffix=core.windows.net"
     container_name = "sensordata"
     blob_name = "sensor_data.json"
