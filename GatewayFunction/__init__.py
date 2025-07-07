@@ -74,7 +74,7 @@ def update_blob(new_event):
         # Upload updated data (overwrite existing blob)
         blob_client.upload_blob(json.dumps(sensor_data), overwrite=True)
 
-        logging.info('✅ Blob updated successfully.')
+        logging.info('✅ Blob updated f successfully.')
 
     except Exception as e:
         logging.error(f"Error updating blob: {e}")
